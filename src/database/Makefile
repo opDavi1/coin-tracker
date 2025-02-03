@@ -1,15 +1,14 @@
 SOURCE_FILES = database.c include/sqlite3.c
 OBJECT_FILES = database.o sqlite3.o
 
-
-bin: $(SOURCE_FILES)
-	@mkdir -p bin
+library: $(SOURCE_FILES)
+	@mkdir -p make/lib
 	gcc -c -Wall -Werror -fpic $(SOURCE_FILES)
-	gcc -shared -o bin/database.so $(OBJECT_FILES)
+	gcc -shared -o make/lib/database.so $(OBJECT_FILES)
 
 
 test: $(OBJECT_FILES) test.o
-	@mkdir -p bin
+	@mkdir -p 
 	gcc -o bin/test -Wall -Werror $(OBJECT_FILES) test.o
 
 
@@ -26,5 +25,5 @@ test.o: test.c
 
 
 clean:
-	rm -rf bin/ $(OBJECT_FILES) test.o
+	rm -rf make/ $(OBJECT_FILES) test.o
 

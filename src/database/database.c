@@ -96,7 +96,7 @@ sqlite3 *db;
 
 
 int _bind_coin_to_stmt(Coin *coin, sqlite3_stmt *stmt) {
-    int rc;
+    int rc = 0;
     rc |= sqlite3_bind_int(stmt, 1, coin->numista_id);
     rc |= sqlite3_bind_text(stmt, 2, coin->name, -1, SQLITE_STATIC);
     rc |= sqlite3_bind_int(stmt, 3, coin->coin_type);

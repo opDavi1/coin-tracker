@@ -1,6 +1,12 @@
 *.db
 settings.toml
 
+# C files
+bin/
+*.o
+*.so
+*.dll
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

@@ -8,8 +8,8 @@ library: $(SOURCE_FILES)
 
 
 test: $(OBJECT_FILES) test.o
-	@mkdir -p 
-	gcc -o bin/test -Wall -Werror $(OBJECT_FILES) test.o
+	@mkdir -p make/bin 
+	gcc -o make/bin/test -Wall -Werror $(OBJECT_FILES) test.o
 
 
 database.o: database.c

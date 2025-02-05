@@ -56,7 +56,7 @@ typedef struct {
         char *obverse_image;
         char *reverse_image;
         char *obverse_description;
-        char *reverse_destription;
+        char *reverse_description;
         int is_demonitized;
         char *comments;
 

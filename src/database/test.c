@@ -34,7 +34,6 @@ Coin test_coin = {
 
 
 int main(int argc, char *argv[]) {
-    Coin coin;
     int id;
     int rc;
     rc = db_init("test_database.db");
@@ -48,10 +47,13 @@ int main(int argc, char *argv[]) {
     }
     printf("Inserted coin with id: %i\n", id);
 
+    Coin coin;
     rc = db_get_coin_by_id(1, &coin);
     if (rc == 1) {
         return 1;
     }
+
+    printf("Coin name: %s, coin id: %i\n", coin.name, coin.id);
 
     db_close();
 

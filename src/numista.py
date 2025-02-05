@@ -58,7 +58,7 @@ def get_coin_by_numista_id(numista_id: int):
     c.currency = currency if currency else ""
     c.grade = 70
     c.obverse_description = obverse_description if obverse_description else ""
-    c.reverse_destription = reverse_destription if reverse_destription else ""
+    c.reverse_description = reverse_destription if reverse_destription else ""
     c.is_demonitized = is_demonitized if is_demonitized else False
     c.comments = comments if comments else ""
     c.shape = coin.CoinShape[shape.upper()] if shape else coin.CoinShape.ROUND

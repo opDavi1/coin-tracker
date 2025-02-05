@@ -37,7 +37,7 @@ def init():
         + "obverse_image TEXT,"
         + "reverse_image TEXT,"
         + "obverse_description TEXT,"
-        + "reverse_destription TEXT,"
+        + "reverse_description TEXT,"
         + "is_demonitized INT,"
         + "comments TEXT)"
     )
@@ -71,7 +71,7 @@ def insert_coin(coin: Coin):
         + "obverse_image,"
         + "reverse_image,"
         + "obverse_description,"
-        + "reverse_destription,"
+        + "reverse_description,"
         + "is_demonitized,"
         + "comments)"
         + "VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
@@ -98,7 +98,7 @@ def insert_coin(coin: Coin):
             coin.obverse_image,
             coin.reverse_image,
             coin.obverse_description,
-            coin.reverse_destription,
+            coin.reverse_description,
             coin.is_demonitized,
             coin.comments,
         ),
@@ -136,7 +136,7 @@ def update_coin(old_coin_id: int, new_coin: Coin):
         + "obverse_image = ?,"
         + "reverse_image = ?,"
         + "obverse_description = ?,"
-        + "reverse_destription = ?,"
+        + "reverse_description = ?,"
         + "is_demonitized = ?,"
         + "comments = ?"
         + "WHERE id = ?",
@@ -163,7 +163,7 @@ def update_coin(old_coin_id: int, new_coin: Coin):
             new_coin.obverse_image,
             new_coin.reverse_image,
             new_coin.obverse_description,
-            new_coin.reverse_destription,
+            new_coin.reverse_description,
             new_coin.is_demonitized,
             new_coin.comments,
             new_coin.id,

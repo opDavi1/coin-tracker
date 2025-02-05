@@ -86,7 +86,7 @@ class Coin:
         self.obverse_image = ""  # file path or url for images
         self.reverse_image = ""
         self.obverse_description = ""
-        self.reverse_destription = ""
+        self.reverse_description = ""
         self.is_demonitized = False
         self.comments = ""
 
@@ -115,7 +115,7 @@ class Coin:
         self.obverse_image = ""
         self.reverse_image = ""
         self.obverse_description = "Bust of Franz I flanked by boughs"
-        self.reverse_destription = "Double-headed eagle"
+        self.reverse_description = "Double-headed eagle"
         self.is_demonitized = True
         self.comments = "There are slight differences between the workshops. The image below, for example, highlights the shift in the legends on the obverse left between A and B, whereas the portraits and branches are almost exactly the same. The writing on B is shifted downwards:"
         return self

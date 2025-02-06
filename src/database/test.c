@@ -52,9 +52,6 @@ int main(int argc, char *argv[]) {
     if (rc == 1) {
         return 1;
     }
-
-    printf("Coin name: %s, coin id: %i\n", coin.name, coin.id);
-
     db_close();
 
     return 0;

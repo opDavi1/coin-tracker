@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <string.h>
 #include "include/sqlite3.h"
 #include "coin.h"
 
@@ -140,40 +139,31 @@ void _sql_res_to_coin(sqlite3_stmt *stmt, Coin *coin) {
     printf("Converting from sql to coin object...\n");
 
     coin->id = sqlite3_column_int(stmt, 0);
-    printf("Coin id: %i\n", coin->id);
-
     coin->numista_id = sqlite3_column_int(stmt, 1);
-    printf("coin numista id: %i\n", coin->numista_id);
-
-    strcpy(coin->name, (char*)(sqlite3_column_text(stmt, 2)));
-    printf("coin name: %s\n", coin->name);
-
-
-    /*
+    coin->name = (char*)sqlite3_column_text(stmt, 2);
     coin->coin_type = sqlite3_column_int(stmt, 3);
-    strcpy(coin->issuer, (char*)sqlite3_column_text(stmt, 4));
-    strcpy(coin->country, (char*)sqlite3_column_text(stmt, 5));
+    coin->issuer = (char*)sqlite3_column_text(stmt, 4);
+    coin->country = (char*)sqlite3_column_text(stmt, 5);
     coin->min_year = sqlite3_column_int(stmt, 6);
     coin->max_year = sqlite3_column_int(stmt, 7);
-    strcpy(coin->composition, (char*)sqlite3_column_text(stmt, 8));
+    coin->composition = (char*)sqlite3_column_text(stmt, 8);
     coin->shape = sqlite3_column_int(stmt, 9);
     coin->diameter = sqlite3_column_double(stmt, 10);
     coin->thickness = sqlite3_column_double(stmt, 11);
     coin->weight = sqlite3_column_double(stmt, 12);
     coin->orientation = sqlite3_column_int(stmt, 13);
-    strcpy(coin->denomination, (char*)sqlite3_column_text(stmt, 14));
+    coin->denomination = (char*)sqlite3_column_text(stmt, 14);
     coin->value = sqlite3_column_double(stmt, 15);
     coin->value_numerator = sqlite3_column_int(stmt, 16);
     coin->value_denominator = sqlite3_column_int(stmt, 17);
-    strcpy(coin->currency, (char*)sqlite3_column_text(stmt, 18));
+    coin->currency = (char*)sqlite3_column_text(stmt, 18);
     coin->grade = sqlite3_column_int(stmt, 19);
-    strcpy(coin->obverse_image, (char*)sqlite3_column_text(stmt, 20));
-    strcpy(coin->reverse_image, (char*)sqlite3_column_text(stmt, 21));
-    strcpy(coin->obverse_description, (char*)sqlite3_column_text(stmt, 22));
-    strcpy(coin->reverse_description, (char*)sqlite3_column_text(stmt, 23));
+    coin->obverse_image = (char*)sqlite3_column_text(stmt, 20);
+    coin->reverse_image = (char*)sqlite3_column_text(stmt, 21);
+    coin->obverse_description = (char*)sqlite3_column_text(stmt, 22);
+    coin->reverse_description = (char*)sqlite3_column_text(stmt, 23);
     coin->is_demonitized = sqlite3_column_int(stmt, 24);
-    strcpy(coin->comments, (char*)sqlite3_column_text(stmt, 25));
-    */
+    coin->comments = (char*)sqlite3_column_text(stmt, 25);
 
     printf("Done!\n");
 }
@@ -271,7 +261,7 @@ int db_insert_coin(Coin *coin, int *id) {
 
 
 int db_get_coin_by_id(int id, Coin *coin) {
-    printf("Getting coin with id: %i...\n", id);
+    printf("Retrieving coin with id: %i...\n", id);
     if (!db_initialized) {
         fprintf(stderr, "Error: Database not initialized\n");
         return 1;
@@ -298,12 +288,13 @@ int db_get_coin_by_id(int id, Coin *coin) {
     }
     
     _sql_res_to_coin(stmt, coin);
-    printf("Done!\n");
+    printf("Successfully retrieved coin with id: %i\n", id);
     return 0;
 }
 
 
 int db_get_coin_by_numista_id(int numista_id, Coin *coin) {
+    printf("Retrieving coin with numista id: %i...\n", numista_id);
     if (!db_initialized) {
         fprintf(stderr, "Error: Database not initialized\n");
         return 1;
@@ -329,6 +320,8 @@ int db_get_coin_by_numista_id(int numista_id, Coin *coin) {
         return 1;
     }
 
+    _sql_res_to_coin(stmt, coin);
+    printf("Successfully retrieved coin with numista id: %i\n", numista_id);
     return 0;
 }
 

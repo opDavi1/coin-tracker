@@ -1,7 +1,6 @@
-#include "coin.h"
-
 #ifndef _DATABASE_H
 #define _DATABASE_H
+#include "coin.h"
 
 
 /*
@@ -80,8 +79,4 @@ int db_update_coin(int id, Coin *coin);
  * Returns 0 on success and 1 on error.
  */
 int db_remove_coin(int id, Coin *coin);
-
-
-
-
 #endif // !_DATABASE_H

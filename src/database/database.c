@@ -361,7 +361,7 @@ int db_update_coin(int id, Coin *coin) {
 }
 
 
-int db_remove_coin(int id, Coin *coin) {
+int db_remove_coin(int id) {
     if (!db_initialized) {
         fprintf(stderr, "Error: Database not initialized\n");
         return 1;

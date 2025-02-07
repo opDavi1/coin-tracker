@@ -74,9 +74,8 @@ int db_update_coin(int id, Coin *coin);
  * to be initialized before this function is called.
  *
  * The first argument is the id to be removed.
- * The second argument (OUTPUT) is the coin that was removed from the database.
  *
  * Returns 0 on success and 1 on error.
  */
-int db_remove_coin(int id, Coin *coin);
+int db_remove_coin(int id);
 #endif // !_DATABASE_H

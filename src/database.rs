@@ -3,6 +3,8 @@
 
 use sqlite::{self, Connection};
 
+use crate::coin::Coin;
+
 const DATABASE_SQL: &str = "CREATE TABLE IF NOT EXISTS coins (
 id INTEGER PRIMARY KEY AUTOINCREMENT,
 numista_id INTEGER,
@@ -38,6 +40,6 @@ pub fn init() -> Result<sqlite::Connection, sqlite::Error> {
     Ok(connection)
 }
 
-fn delete_coin(connection: &Connection, coin: Coin) -> Result<Coin, sqlite::Error> {
+fn delete_coin(connection: &Connection, coin: Coin) -> Result<i32, sqlite::Error> {
     todo!()
 }

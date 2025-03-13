@@ -1,30 +1,30 @@
 pub struct Coin {
-    id: i32,
-    numista_id: i32,
-    name: String,
-    coin_type: CoinType,
-    min_year: i32,
-    max_year: i32,
-    country: String,
-    issuer: String,
-    composition: String,
-    shape: CoinShape,
-    diameter: f32,
-    thickness: f32,
-    weight: f32,
-    orientation: CoinOrientation,
-    denomination: String,
-    value: f32,
-    value_numerator: i32,
-    value_denominator: i32,
-    currency: String,
-    grade: i8,
-    obverse_image: String,
-    reverse_image: String,
-    obverse_description: String,
-    reverse_description: String,
-    is_demonitized: bool,
-    comments: String,
+    pub id: i32,
+    pub numista_id: i32,
+    pub name: String,
+    pub coin_type: CoinType,
+    pub min_year: i32,
+    pub max_year: i32,
+    pub country: String,
+    pub issuer: String,
+    pub composition: String,
+    pub shape: CoinShape,
+    pub diameter: f32,
+    pub thickness: f32,
+    pub weight: f32,
+    pub orientation: CoinOrientation,
+    pub denomination: String,
+    pub value: f32,
+    pub value_numerator: i32,
+    pub value_denominator: i32,
+    pub currency: String,
+    pub grade: i8,
+    pub obverse_image: String,
+    pub reverse_image: String,
+    pub obverse_description: String,
+    pub reverse_description: String,
+    pub is_demonitized: bool,
+    pub comments: String,
 }
 
 impl Coin {
@@ -65,7 +65,8 @@ impl Coin {
         }
     }
 
-    pub fn from_sql_row(row: &sqlite::Row) -> Coin {
+    pub fn from_sql_row(_row: &sqlite::Row) -> Coin {
+        // let c = Coin::new();
         todo!()
     }
 }

@@ -1,5 +1,6 @@
 use std::error::Error;
 
+mod coin;
 mod database;
 
 fn main() -> Result<(), Box<dyn Error>> {

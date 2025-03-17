@@ -66,9 +66,9 @@ pub fn get_all_coins(connection: &Connection) -> Result<Vec<Coin>, Error> {
     Ok(coins)
 }
 
-pub fn get_coin_by_id(connection: &Connection, id: i64) -> Result<Coin, Error> {
+pub fn get_coin_by_id(connection: &Connection, id: &i64) -> Result<Coin, Error> {
     let mut statement = connection.prepare("SELECT * FROM coins WHERE id = ?")?;
-    statement.bind((1, id))?;
+    statement.bind((1, *id))?;
     match statement.next() {
         Ok(State::Row) => Coin::from_sql_row(&statement),
         Ok(State::Done) => {
@@ -81,9 +81,9 @@ pub fn get_coin_by_id(connection: &Connection, id: i64) -> Result<Coin, Error> {
     }
 }
 
-pub fn get_coin_by_numista_id(connection: &Connection, numista_id: i64) -> Result<Coin, Error> {
+pub fn get_coin_by_numista_id(connection: &Connection, numista_id: &i64) -> Result<Coin, Error> {
     let mut statement = connection.prepare("SELECT * FROM coins WHERE numista_id = ?")?;
-    statement.bind((1, numista_id))?;
+    statement.bind((1, *numista_id))?;
     match statement.next() {
         Ok(State::Row) => Coin::from_sql_row(&statement),
         Ok(State::Done) => {

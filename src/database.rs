@@ -40,11 +40,11 @@ pub fn init() -> Result<Connection, Error> {
     Ok(connection)
 }
 
-pub fn delete_coin(connection: &Connection, coin: &Coin) -> Result<i64, Error> {
+pub fn delete_coin(connection: &Connection, id: i64) -> Result<i64, Error> {
     let mut statement = connection.prepare("DELETE * FROM coins WHERE id = ?")?;
-    statement.bind((1, coin.id as i64))?;
+    statement.bind((1, id))?;
     match statement.next() {
-        Ok(State::Done) => Ok(coin.id),
+        Ok(State::Done) => Ok(id),
         Ok(State::Row) => {
             return Err(Error {
                 code: None, 

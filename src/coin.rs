@@ -1,3 +1,6 @@
+// This file is a part of coin-tracker by opDavi1 licensed under the GPL-3.0-or-later license.
+// See the included LICENSE.md file for more details or go to <https://www.gnu.org/licenses/>
+//
 pub struct Coin {
     pub id: i64,
     pub numista_id: i64,

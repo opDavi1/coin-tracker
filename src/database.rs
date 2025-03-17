@@ -63,6 +63,35 @@ pub fn get_all_coins(connection: &Connection) -> Result<Vec<Coin>, Error> {
         let coin = Coin::from_sql_row(&statement)?;
         coins.push(coin);
     }
-
     Ok(coins)
+}
+
+pub fn get_coin_by_id(connection: &Connection, id: i64) -> Result<Coin, Error> {
+    let mut statement = connection.prepare("SELECT * FROM coins WHERE id = ?")?;
+    statement.bind((1, id))?;
+    match statement.next() {
+        Ok(State::Row) => Coin::from_sql_row(&statement),
+        Ok(State::Done) => {
+            Err(Error {
+                code: None,
+                message: Some("SQL Statement returned unexpected result".to_string())
+            })
+        },
+        Err(e) => return Err(e),
+    }
+}
+
+pub fn get_coin_by_numista_id(connection: &Connection, numista_id: i64) -> Result<Coin, Error> {
+    let mut statement = connection.prepare("SELECT * FROM coins WHERE numista_id = ?")?;
+    statement.bind((1, numista_id))?;
+    match statement.next() {
+        Ok(State::Row) => Coin::from_sql_row(&statement),
+        Ok(State::Done) => {
+            Err(Error {
+                code: None,
+                message: Some("SQL Statement returned unexpected result".to_string())
+            })
+        },
+        Err(e) => return Err(e),
+    }
 }

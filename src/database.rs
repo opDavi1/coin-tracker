@@ -1,6 +1,8 @@
 // This file is a part of coin-tracker by opDavi1 licensed under the GPL-3.0-or-later license.
 // See the included LICENSE.md file for more details or go to <https://www.gnu.org/licenses/>
 
+use std::path::Path;
+
 use rusqlite::{params, Connection, Result};
 use crate::coin::Coin;
 
@@ -64,8 +66,12 @@ const UPDATE_SQL: &str = "UPDATE coins SET \
         WHERE id = ?";
 
 
-pub fn init() -> Result<Connection> {
-    let connection = Connection::open("database.db")?;
+pub fn init(file: Option<&Path>) -> Result<Connection> {
+    let connection: Connection;
+    match file {
+        Some(f) => connection = Connection::open(f)?,
+        None => connection = Connection::open("database.db")?,
+    }
     connection.execute(DATABASE_SQL, ())?;
     println!("Initialized the database");
     Ok(connection)

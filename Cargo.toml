@@ -1,5 +1,5 @@
 [package]
-name = "coin-tracker-rust"
+name = "coin_tracker"
 version = "0.1.0"
 authors = ["opDavi1"]
 edition = "2024"

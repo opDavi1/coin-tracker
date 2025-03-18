@@ -1,7 +1,7 @@
 // This file is a part of coin-tracker by opDavi1 licensed under the GPL-3.0-or-later license.
 // See the included LICENSE.md file for more details or go to <https://www.gnu.org/licenses/>
 
-use sqlite::{self, Connection, Error, State};
+use sqlite::{self, Connection, Error, State, Statement};
 
 use crate::coin::Coin;
 
@@ -32,6 +32,35 @@ obverse_description TEXT,
 reverse_description TEXT,
 is_demonitized INT,
 comments TEXT)";
+
+fn bind_coin_to_stmt(stmt: &mut Statement, coin: &Coin) -> Result<(), Error> {
+    stmt.bind((1, coin.numista_id))?;
+    stmt.bind((2, coin.name.as_str()))?;
+    stmt.bind((3, coin.coin_type as i64))?;
+    stmt.bind((4, coin.issuer.as_str()))?;
+    stmt.bind((5, coin.country.as_str()))?;
+    stmt.bind((6, coin.min_year))?;
+    stmt.bind((7, coin.max_year))?;
+    stmt.bind((8, coin.composition.as_str()))?;
+    stmt.bind((9, coin.shape as i64))?;
+    stmt.bind((10, coin.diameter))?;
+    stmt.bind((11, coin.thickness))?;
+    stmt.bind((12, coin.weight))?;
+    stmt.bind((13, coin.orientation as i64))?;
+    stmt.bind((14, coin.denomination.as_str()))?;
+    stmt.bind((15, coin.value))?;
+    stmt.bind((16, coin.value_numerator))?;
+    stmt.bind((17, coin.value_denominator))?;
+    stmt.bind((18, coin.currency.as_str()))?;
+    stmt.bind((19, coin.grade as i64))?;
+    stmt.bind((20, coin.obverse_image.as_str()))?;
+    stmt.bind((21, coin.reverse_image.as_str()))?;
+    stmt.bind((22, coin.obverse_description.as_str()))?;
+    stmt.bind((23, coin.reverse_description.as_str()))?;
+    stmt.bind((24, coin.is_demonitized as i64))?;
+    stmt.bind((25, coin.comments.as_str()))?;
+    Ok(())
+}
 
 pub fn init() -> Result<Connection, Error> {
     let connection = sqlite::open("database.db")?;
@@ -93,5 +122,48 @@ pub fn get_coin_by_numista_id(connection: &Connection, numista_id: &i64) -> Resu
             })
         },
         Err(e) => return Err(e),
+    }
+}
+
+pub fn insert_coin(connection: &Connection, coin: &Coin) -> Result<(), Error> {
+    let mut statement = connection.prepare(
+        "INSERT INTO coins ( \
+        id, \
+        numista_id \
+        name, \
+        coin_type, \
+        issuer, \
+        country, \
+        min_year, \
+        max_year, \
+        composition, \
+        shape, \
+        diameter, \
+        thickness, \
+        weight, \
+        orientation, \
+        denomination, \
+        value, \
+        value_numerator, \
+        value_denominator, \
+        currency, \
+        grade, \
+        obverse_image, \
+        reverse_image, \
+        obverse_description, \
+        reverse_description, \
+        is_demonitized, \
+        comments) \
+        VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")?;
+    bind_coin_to_stmt(&mut statement, &coin)?;
+    match statement.next() {
+        Ok(State::Done) => Ok(()),
+        Ok(State::Row) => {
+            Err(Error {
+                code: None,
+                message: Some("SQL Statement returned unexpected result".to_string())
+            })
+        },
+        Err(e) => Err(e),
     }
 }

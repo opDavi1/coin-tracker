@@ -149,9 +149,11 @@ impl Default for Coin {
     }
 }
 
+#[derive(Copy, Clone, Default)]
 pub enum CoinOrientation {
-    Medal = 0,
+    #[default]
     Coin,
+    Medal,
     Other,
 }
 
@@ -165,8 +167,10 @@ impl CoinOrientation {
     }
 }
 
+#[derive(Copy, Clone, Default)]
 pub enum CoinShape {
-    Round = 0,
+    #[default]
+    Round,
     Square,
     Polygonal,
     Scalloped,
@@ -187,8 +191,10 @@ impl CoinShape {
     }
 }
 
+#[derive(Copy, Clone, Default)]
 pub enum CoinType {
-    StandardCirculationCoins = 0,
+    #[default]
+    StandardCirculationCoins,
     CirculatingCommemorativeCoins,
     NonCirculatingCoins,
     CollectorCoins,

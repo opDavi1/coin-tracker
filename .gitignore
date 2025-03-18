@@ -1,1 +1,7 @@
+# Project specific
+*.db
+settings.toml
+
+
+# Rust
 /target

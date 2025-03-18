@@ -1,7 +1,13 @@
 [package]
 name = "coin-tracker-rust"
 version = "0.1.0"
+authors = ["opDavi1"]
 edition = "2024"
+readme = "README.md"
+repository = "https://github.com/opDavi1/coin-tracker-rust"
+license = "GPL-3.0-or-later"
+license-file = "LICENSE.md"
+
 
 [dependencies]
-sqlite = "0.36.2"
+rusqlite = "0.34.0"

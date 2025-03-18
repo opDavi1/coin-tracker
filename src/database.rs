@@ -149,7 +149,6 @@ pub fn insert_coin(connection: &Connection, coin: &Coin) -> Result<i64> {
 pub fn update_coin(connection: &Connection, id: &i64, new_coin: &Coin) -> Result<()> {
     let mut statement = connection.prepare(UPDATE_SQL)?;
     match statement.execute(params!(
-        new_coin.id, 
         new_coin.numista_id, 
         new_coin.name, 
         new_coin.coin_type as i64, 
@@ -175,6 +174,7 @@ pub fn update_coin(connection: &Connection, id: &i64, new_coin: &Coin) -> Result
         new_coin.reverse_description,
         new_coin.is_demonitized,
         new_coin.comments,
+        id, 
     )) {
         Ok(_) => Ok(()),
         Err(e) => Err(e),

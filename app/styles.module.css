@@ -1,0 +1,8 @@
+.coin {
+    border: 2px solid black;
+    margin-bottom: 1vh;
+}
+
+.coin li{
+  list-style-type: none;
+}

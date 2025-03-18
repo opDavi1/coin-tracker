@@ -1,5 +1,5 @@
-use coin_tracker::coin::Coin;
-use coin_tracker::database as db;
+use coin_tracker_lib::coin::Coin;
+use coin_tracker_lib::database as db;
 
 #[test]
 fn database() {

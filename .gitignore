@@ -5,6 +5,10 @@ settings.toml
 # Rust
 /target
 
+# next.js
+/.next/
+/out/
+
 # dependency directories
 node_modules/
 

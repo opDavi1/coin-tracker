@@ -35,6 +35,7 @@ pub struct Coin {
     pub comments: String,
 }
 
+
 impl Coin {
     pub fn new() -> Coin {
         Coin::default()
@@ -105,6 +106,7 @@ impl Coin {
     }
 }
 
+
 impl Default for Coin {
     fn default() -> Coin {
         Coin {
@@ -138,6 +140,7 @@ impl Default for Coin {
     }
 }
 
+
 #[derive(Copy, Clone, Default)]
 pub enum CoinOrientation {
     Medal,
@@ -145,6 +148,7 @@ pub enum CoinOrientation {
     Coin,
     Other,
 }
+
 
 impl From<i64> for CoinOrientation {
     fn from(value: i64) -> Self {
@@ -156,6 +160,7 @@ impl From<i64> for CoinOrientation {
     }
 }
 
+
 impl FromSql for CoinOrientation {
     fn column_result(value: ValueRef<'_>) -> FromSqlResult<Self> {
         match value {
@@ -164,6 +169,7 @@ impl FromSql for CoinOrientation {
         }
     }
 }
+
 
 #[derive(Copy, Clone, Default)]
 pub enum CoinShape {
@@ -175,6 +181,7 @@ pub enum CoinShape {
     Triangular,
     Other,
 }
+
 
 impl From<i64> for CoinShape {
     fn from(value: i64) -> Self {
@@ -189,6 +196,7 @@ impl From<i64> for CoinShape {
     }
 }
 
+
 impl FromSql for CoinShape {
     fn column_result(value: ValueRef<'_>) -> FromSqlResult<Self> {
         match value {
@@ -197,6 +205,7 @@ impl FromSql for CoinShape {
         }
     }
 }
+
 
 #[derive(Copy, Clone, Default)]
 pub enum CoinType {
@@ -214,6 +223,7 @@ pub enum CoinType {
     ProtoCoins,
     Other,
 }
+
 
 impl From<i64> for CoinType {
     fn from(value: i64) -> Self {
@@ -233,6 +243,7 @@ impl From<i64> for CoinType {
         }
     }
 }
+
 
 impl FromSql for CoinType {
     fn column_result(value: ValueRef<'_>) -> FromSqlResult<Self> {

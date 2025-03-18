@@ -1,9 +1,7 @@
 // This file is a part of coin-tracker by opDavi1 licensed under the GPL-3.0-or-later license.
 // See the included LICENSE.md file for more details or go to <https://www.gnu.org/licenses/>
 
-// use sqlite::{self, Connection, Error, State, Statement};
 use rusqlite::{params, Connection, Result};
-
 use crate::coin::Coin;
 
 const DATABASE_SQL: &str = "CREATE TABLE IF NOT EXISTS coins (
@@ -73,10 +71,12 @@ pub fn init() -> Result<Connection> {
     Ok(connection)
 }
 
+
 pub fn delete_coin(connection: &Connection, id: &i64) -> Result<usize> {
     let mut statement = connection.prepare("DELETE * FROM coins WHERE id = ?")?;
     statement.execute([id])
 }
+
 
 pub fn get_all_coins(connection: &Connection) -> Result<Vec<Coin>> {
     let mut statement = connection.prepare("SELECT * FROM coins")?;
@@ -90,6 +90,7 @@ pub fn get_all_coins(connection: &Connection) -> Result<Vec<Coin>> {
     Ok(coins)
 }
 
+
 pub fn get_coin_by_id(connection: &Connection, id: &i64) -> Result<Coin> {
     let mut statement = connection.prepare("SELECT * FROM coins WHERE id = ?")?;
     statement.query_row([id], |row| {
@@ -97,12 +98,14 @@ pub fn get_coin_by_id(connection: &Connection, id: &i64) -> Result<Coin> {
     })
 }
 
+
 pub fn get_coin_by_numista_id(connection: &Connection, numista_id: &i64) -> Result<Coin> {
     let mut statement = connection.prepare("SELECT * FROM coins WHERE numista_id = ?")?;
     statement.query_row([numista_id], |row| {
         Coin::from_sql_row(row)
     })
 }
+
 
 pub fn insert_coin(connection: &Connection, coin: &Coin) -> Result<i64> {
     let mut statement = connection.prepare(INSERT_SQL)?;
@@ -136,6 +139,7 @@ pub fn insert_coin(connection: &Connection, coin: &Coin) -> Result<i64> {
         c.comments,
     ))
 }
+
 
 pub fn update_coin(connection: &Connection, id: &i64, new_coin: &Coin) -> Result<()> {
     let mut statement = connection.prepare(UPDATE_SQL)?;

@@ -2,10 +2,13 @@
 // See the included LICENSE.md file for more details or go to <https://www.gnu.org/licenses/>
 
 use std::convert::From;
+use std::fmt::Debug;
 
 use rusqlite::{Result, Row};
 use rusqlite::types::{FromSql, FromSqlError, FromSqlResult, ValueRef};
 
+#[allow(dead_code)]
+#[derive(Debug)]
 pub struct Coin {
     pub id: i64,
     pub numista_id: i64,
@@ -141,7 +144,7 @@ impl Default for Coin {
 }
 
 
-#[derive(Copy, Clone, Default)]
+#[derive(Copy, Clone, Debug, Default)]
 pub enum CoinOrientation {
     Medal,
     #[default]
@@ -171,7 +174,7 @@ impl FromSql for CoinOrientation {
 }
 
 
-#[derive(Copy, Clone, Default)]
+#[derive(Copy, Clone, Debug, Default)]
 pub enum CoinShape {
     #[default]
     Round,
@@ -207,7 +210,7 @@ impl FromSql for CoinShape {
 }
 
 
-#[derive(Copy, Clone, Default)]
+#[derive(Copy, Clone, Debug, Default)]
 pub enum CoinType {
     #[default]
     StandardCirculationCoins,

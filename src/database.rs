@@ -105,11 +105,14 @@ pub fn get_coin_by_id(connection: &Connection, id: &i64) -> Result<Coin> {
 }
 
 
-pub fn get_coin_by_numista_id(connection: &Connection, numista_id: &i64) -> Result<Coin> {
+pub fn get_coins_by_numista_id(connection: &Connection, numista_id: &i64) -> Result<Vec<Coin>> {
     let mut statement = connection.prepare("SELECT * FROM coins WHERE numista_id = ?")?;
-    statement.query_row([numista_id], |row| {
-        Coin::from_sql_row(row)
-    })
+    let mut rows = statement.query([numista_id])?;
+    let mut coins = Vec::new();
+    while let Some(row) = rows.next()? {
+        coins.push(Coin::from_sql_row(row)?);
+    }
+    Ok(coins)
 }
 
 

@@ -6,32 +6,63 @@ use sqlite::{self, Connection, Error, State, Statement};
 use crate::coin::Coin;
 
 const DATABASE_SQL: &str = "CREATE TABLE IF NOT EXISTS coins (
-id INTEGER PRIMARY KEY AUTOINCREMENT,
-numista_id INTEGER,
-name TEXT NOT NULL,
-coin_type INT,
-issuer TEXT,
-country TEXT,
-min_year INT,
-max_year INT,
-composition TEXT,
-shape INT,
-diameter REAL,
-thickness REAL,
-weight REAL,
-orientation INT,
-denomination TEXT,
-value REAL,
-value_numerator INT,
-value_denominator INT,
-currency TEXT,
-grade INT,
-obverse_image TEXT,
-reverse_image TEXT,
-obverse_description TEXT,
-reverse_description TEXT,
-is_demonitized INT,
-comments TEXT)";
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        numista_id INTEGER,
+        name TEXT NOT NULL,
+        coin_type INT,
+        issuer TEXT,
+        country TEXT,
+        min_year INT,
+        max_year INT,
+        composition TEXT,
+        shape INT,
+        diameter REAL,
+        thickness REAL,
+        weight REAL,
+        orientation INT,
+        denomination TEXT,
+        value REAL,
+        value_numerator INT,
+        value_denominator INT,
+        currency TEXT,
+        grade INT,
+        obverse_image TEXT,
+        reverse_image TEXT,
+        obverse_description TEXT,
+        reverse_description TEXT,
+        is_demonitized INT,
+        comments TEXT)";
+
+const INSERT_SQL: &str = "INSERT INTO coins  \
+        VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+const UPDATE_SQL: &str = "UPDATE coins SET \
+        numista_id = ?, \
+        name = ?, \
+        coin_type.value = ?, \
+        issuer = ?, \
+        country = ?, \
+        min_year = ?, \
+        max_year = ?, \
+        composition = ?, \
+        shape.value = ?, \
+        diameter = ?, \
+        thickness = ?, \
+        weight = ?, \
+        orientation.value = ?, \
+        denomination = ?, \
+        value = ?, \
+        value_numerator = ?, \
+        value_denominator = ?, \
+        currency = ?, \
+        grade = ?, \
+        obverse_image = ?, \
+        reverse_image = ?, \
+        obverse_description = ?, \
+        reverse_description = ?, \
+        is_demonitized = ?, \
+        comments = ? \
+        WHERE id = ?";
 
 fn bind_coin_to_stmt(stmt: &mut Statement, coin: &Coin) -> Result<(), Error> {
     stmt.bind((1, coin.numista_id))?;
@@ -126,9 +157,7 @@ pub fn get_coin_by_numista_id(connection: &Connection, numista_id: &i64) -> Resu
 }
 
 pub fn insert_coin(connection: &Connection, coin: &Coin) -> Result<(), Error> {
-    let mut statement = connection.prepare(
-        "INSERT INTO coins  \
-        VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")?;
+    let mut statement = connection.prepare(INSERT_SQL)?;
     bind_coin_to_stmt(&mut statement, &coin)?;
     match statement.next() {
         Ok(State::Done) => Ok(()),
@@ -143,33 +172,7 @@ pub fn insert_coin(connection: &Connection, coin: &Coin) -> Result<(), Error> {
 }
 
 pub fn update_coin(connection: &Connection, id: &i64, new_coin: &Coin) -> Result<(), Error> {
-    let mut statement = connection.prepare("UPDATE coins SET \
-        numista_id = ?, \
-        name = ?, \
-        coin_type.value = ?, \
-        issuer = ?, \
-        country = ?, \
-        min_year = ?, \
-        max_year = ?, \
-        composition = ?, \
-        shape.value = ?, \
-        diameter = ?, \
-        thickness = ?, \
-        weight = ?, \
-        orientation.value = ?, \
-        denomination = ?, \
-        value = ?, \
-        value_numerator = ?, \
-        value_denominator = ?, \
-        currency = ?, \
-        grade = ?, \
-        obverse_image = ?, \
-        reverse_image = ?, \
-        obverse_description = ?, \
-        reverse_description = ?, \
-        is_demonitized = ?, \
-        comments = ? \
-        WHERE id = ?")?;
+    let mut statement = connection.prepare(UPDATE_SQL)?;
     bind_coin_to_stmt(&mut statement, &new_coin)?;
     statement.bind((26, *id))?;
     match statement.next() {

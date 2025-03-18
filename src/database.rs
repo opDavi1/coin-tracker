@@ -127,35 +127,51 @@ pub fn get_coin_by_numista_id(connection: &Connection, numista_id: &i64) -> Resu
 
 pub fn insert_coin(connection: &Connection, coin: &Coin) -> Result<(), Error> {
     let mut statement = connection.prepare(
-        "INSERT INTO coins ( \
-        id, \
-        numista_id \
-        name, \
-        coin_type, \
-        issuer, \
-        country, \
-        min_year, \
-        max_year, \
-        composition, \
-        shape, \
-        diameter, \
-        thickness, \
-        weight, \
-        orientation, \
-        denomination, \
-        value, \
-        value_numerator, \
-        value_denominator, \
-        currency, \
-        grade, \
-        obverse_image, \
-        reverse_image, \
-        obverse_description, \
-        reverse_description, \
-        is_demonitized, \
-        comments) \
+        "INSERT INTO coins  \
         VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")?;
     bind_coin_to_stmt(&mut statement, &coin)?;
+    match statement.next() {
+        Ok(State::Done) => Ok(()),
+        Ok(State::Row) => {
+            Err(Error {
+                code: None,
+                message: Some("SQL Statement returned unexpected result".to_string())
+            })
+        },
+        Err(e) => Err(e),
+    }
+}
+
+pub fn update_coin(connection: &Connection, id: &i64, new_coin: &Coin) -> Result<(), Error> {
+    let mut statement = connection.prepare("UPDATE coins SET \
+        numista_id = ?, \
+        name = ?, \
+        coin_type.value = ?, \
+        issuer = ?, \
+        country = ?, \
+        min_year = ?, \
+        max_year = ?, \
+        composition = ?, \
+        shape.value = ?, \
+        diameter = ?, \
+        thickness = ?, \
+        weight = ?, \
+        orientation.value = ?, \
+        denomination = ?, \
+        value = ?, \
+        value_numerator = ?, \
+        value_denominator = ?, \
+        currency = ?, \
+        grade = ?, \
+        obverse_image = ?, \
+        reverse_image = ?, \
+        obverse_description = ?, \
+        reverse_description = ?, \
+        is_demonitized = ?, \
+        comments = ? \
+        WHERE id = ?")?;
+    bind_coin_to_stmt(&mut statement, &new_coin)?;
+    statement.bind((26, *id))?;
     match statement.next() {
         Ok(State::Done) => Ok(()),
         Ok(State::Row) => {

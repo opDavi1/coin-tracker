@@ -10,4 +10,4 @@ license-file = "LICENSE.md"
 
 
 [dependencies]
-sqlite = "0.36.2"
+rusqlite = "0.34.0"

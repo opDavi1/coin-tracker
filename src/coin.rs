@@ -1,6 +1,11 @@
 // This file is a part of coin-tracker by opDavi1 licensed under the GPL-3.0-or-later license.
 // See the included LICENSE.md file for more details or go to <https://www.gnu.org/licenses/>
-//
+
+use std::convert::From;
+
+use rusqlite::{Result, Row};
+use rusqlite::types::{FromSql, FromSqlError, FromSqlResult, ValueRef};
+
 pub struct Coin {
     pub id: i64,
     pub numista_id: i64,
@@ -68,50 +73,34 @@ impl Coin {
         }
     }
 
-    pub fn from_sql_row(stmt: &sqlite::Statement) -> Result<Coin, sqlite::Error> {
+    pub fn from_sql_row(row: &Row) -> Result<Coin> {
         let mut c = Coin::new();
-        c.id = stmt.read::<i64, _>("id")?;
-        c.numista_id = stmt.read::<i64, _>("numista_id")?;
-        c.name = stmt.read::<String, _>("name")?;
-        c.coin_type = match stmt.read::<i64, _>("coin_type") {
-            Ok(i) => CoinType::from_int(i),
-            Err(_) => return Err(sqlite::Error{code: None, message: Some("Could not read sql".to_string())}),
-        };
-        c.min_year = stmt.read::<i64, _>("min_year")?;
-        c.max_year = stmt.read::<i64, _>("max_year")?;
-        c.country = stmt.read::<String, _>("country")?;
-        c.issuer = stmt.read::<String, _>("issuer")?;
-        c.composition = stmt.read::<String, _>("composition")?;
-        c.shape = match stmt.read::<i64, _>("shape") {
-            Ok(i) => CoinShape::from_int(i),
-            Err(_) => return Err(sqlite::Error{code: None, message: Some("Could not read sql".to_string())}),
-        };
-        c.diameter = stmt.read::<f64, _>("diameter")?;
-        c.thickness = stmt.read::<f64, _>("thickness")?;
-        c.weight = stmt.read::<f64, _>("weight")?;
-        c.orientation = match stmt.read::<i64, _>("orientation") {
-            Ok(i) => CoinOrientation::from_int(i),
-            Err(_) => return Err(sqlite::Error{code: None, message: Some("Could not read sql".to_string())}),
-        };
-        c.denomination = stmt.read::<String, _>("denomination")?;
-        c.value = stmt.read::<f64, _>("value")?;
-        c.value_numerator = stmt.read::<i64, _>("value_numerator")?;
-        c.value_denominator = stmt.read::<i64, _>("value_denominator")?;
-        c.currency = stmt.read::<String, _>("currency")?;
-        c.grade = stmt.read::<i64, _>("grade")? as i8;
-        c.obverse_image = stmt.read::<String, _>("obverse_image")?;
-        c.reverse_image = stmt.read::<String, _>("reverse_image")?;
-        c.obverse_description = stmt.read::<String, _>("obverse_description")?;
-        c.reverse_description = stmt.read::<String, _>("reverse_description")?;
-        c.is_demonitized = match stmt.read::<i64, _>("is_demonitized") {
-            Ok(i) => {
-                if i == 0 {false}
-                else {true}
-            },
-            Err(_) => return Err(sqlite::Error{code: None, message: Some("Could not read sql".to_string())}),
-
-        };
-        c.comments = stmt.read::<String, _>("comments")?;
+        c.id = row.get::<usize, i64>(1)?;
+        c.numista_id = row.get::<usize, i64>(2)?;
+        c.name = row.get::<usize, String>(3)?;
+        c.coin_type = row.get::<usize, CoinType>(4)?;
+        c.min_year = row.get::<usize, i64>(5)?;
+        c.max_year = row.get::<usize, i64>(6)?;
+        c.country = row.get::<usize, String>(7)?;
+        c.issuer = row.get::<usize, String>(8)?;
+        c.composition = row.get::<usize, String>(9)?;
+        c.shape = row.get::<usize, CoinShape>(10)?;
+        c.diameter = row.get::<usize, f64>(11)?;
+        c.thickness = row.get::<usize, f64>(12)?;
+        c.weight = row.get::<usize, f64>(13)?;
+        c.orientation = row.get::<usize, CoinOrientation>(14)?;
+        c.denomination = row.get::<usize, String>(15)?;
+        c.value = row.get::<usize, f64>(16)?;
+        c.value_numerator = row.get::<usize, i64>(17)?;
+        c.value_denominator = row.get::<usize, i64>(18)?;
+        c.currency = row.get::<usize, String>(19)?;
+        c.grade = row.get::<usize, i8>(20)?;
+        c.obverse_image = row.get::<usize, String>(21)?;
+        c.reverse_image = row.get::<usize, String>(22)?;
+        c.obverse_description = row.get::<usize, String>(23)?;
+        c.reverse_description = row.get::<usize, String>(24)?;
+        c.is_demonitized = row.get::<usize, bool>(25)?;
+        c.comments = row.get::<usize, String>(26)?;
         Ok(c)
     }
 }
@@ -151,18 +140,27 @@ impl Default for Coin {
 
 #[derive(Copy, Clone, Default)]
 pub enum CoinOrientation {
+    Medal,
     #[default]
     Coin,
-    Medal,
     Other,
 }
 
-impl CoinOrientation {
-    pub fn from_int(int: i64) -> CoinOrientation {
-        match int {
+impl From<i64> for CoinOrientation {
+    fn from(value: i64) -> Self {
+        match value {
             0 => CoinOrientation::Medal,
             1 => CoinOrientation::Coin,
             _ => CoinOrientation::Other,
+        }
+    }
+}
+
+impl FromSql for CoinOrientation {
+    fn column_result(value: ValueRef<'_>) -> FromSqlResult<Self> {
+        match value {
+            ValueRef::Integer(i) => Ok(CoinOrientation::from(i)),
+            _ => Err(FromSqlError::InvalidType),
         }
     }
 }
@@ -178,15 +176,24 @@ pub enum CoinShape {
     Other,
 }
 
-impl CoinShape {
-    pub fn from_int(int: i64) -> CoinShape {
-        match int {
+impl From<i64> for CoinShape {
+    fn from(value: i64) -> Self {
+        match value {
             0 => CoinShape::Round,
             1 => CoinShape::Square,
             2 => CoinShape::Polygonal,
             3 => CoinShape::Scalloped,
             4 => CoinShape::Triangular,
             _ => CoinShape::Other,
+        }
+    }
+}
+
+impl FromSql for CoinShape {
+    fn column_result(value: ValueRef<'_>) -> FromSqlResult<Self> {
+        match value {
+            ValueRef::Integer(i) => Ok(CoinShape::from(i)),
+            _ => Err(FromSqlError::InvalidType),
         }
     }
 }
@@ -208,9 +215,9 @@ pub enum CoinType {
     Other,
 }
 
-impl CoinType {
-    pub fn from_int(int: i64) -> CoinType {
-        match int {
+impl From<i64> for CoinType {
+    fn from(value: i64) -> Self {
+        match value {
             0 => CoinType::StandardCirculationCoins,
             1 => CoinType::CirculatingCommemorativeCoins,
             2 => CoinType::NonCirculatingCoins,
@@ -223,6 +230,15 @@ impl CoinType {
             9 => CoinType::ContemporaryCounterfeits,
             10 => CoinType::ProtoCoins,
             _ => CoinType::Other,
+        }
+    }
+}
+
+impl FromSql for CoinType {
+    fn column_result(value: ValueRef<'_>) -> FromSqlResult<Self> {
+        match value {
+            ValueRef::Integer(i) => Ok(CoinType::from(i)),
+            _ => Err(FromSqlError::InvalidType),
         }
     }
 }

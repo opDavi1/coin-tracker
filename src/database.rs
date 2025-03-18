@@ -1,7 +1,8 @@
 // This file is a part of coin-tracker by opDavi1 licensed under the GPL-3.0-or-later license.
 // See the included LICENSE.md file for more details or go to <https://www.gnu.org/licenses/>
 
-use sqlite::{self, Connection, Error, State, Statement};
+// use sqlite::{self, Connection, Error, State, Statement};
+use rusqlite::{params, Connection, Result};
 
 use crate::coin::Coin;
 
@@ -64,125 +65,109 @@ const UPDATE_SQL: &str = "UPDATE coins SET \
         comments = ? \
         WHERE id = ?";
 
-fn bind_coin_to_stmt(stmt: &mut Statement, coin: &Coin) -> Result<(), Error> {
-    stmt.bind((1, coin.numista_id))?;
-    stmt.bind((2, coin.name.as_str()))?;
-    stmt.bind((3, coin.coin_type as i64))?;
-    stmt.bind((4, coin.issuer.as_str()))?;
-    stmt.bind((5, coin.country.as_str()))?;
-    stmt.bind((6, coin.min_year))?;
-    stmt.bind((7, coin.max_year))?;
-    stmt.bind((8, coin.composition.as_str()))?;
-    stmt.bind((9, coin.shape as i64))?;
-    stmt.bind((10, coin.diameter))?;
-    stmt.bind((11, coin.thickness))?;
-    stmt.bind((12, coin.weight))?;
-    stmt.bind((13, coin.orientation as i64))?;
-    stmt.bind((14, coin.denomination.as_str()))?;
-    stmt.bind((15, coin.value))?;
-    stmt.bind((16, coin.value_numerator))?;
-    stmt.bind((17, coin.value_denominator))?;
-    stmt.bind((18, coin.currency.as_str()))?;
-    stmt.bind((19, coin.grade as i64))?;
-    stmt.bind((20, coin.obverse_image.as_str()))?;
-    stmt.bind((21, coin.reverse_image.as_str()))?;
-    stmt.bind((22, coin.obverse_description.as_str()))?;
-    stmt.bind((23, coin.reverse_description.as_str()))?;
-    stmt.bind((24, coin.is_demonitized as i64))?;
-    stmt.bind((25, coin.comments.as_str()))?;
-    Ok(())
-}
 
-pub fn init() -> Result<Connection, Error> {
-    let connection = sqlite::open("database.db")?;
-    connection.execute(DATABASE_SQL)?;
+pub fn init() -> Result<Connection> {
+    let connection = Connection::open("database.db")?;
+    connection.execute(DATABASE_SQL, ())?;
     println!("Initialized the database");
     Ok(connection)
 }
 
-pub fn delete_coin(connection: &Connection, id: i64) -> Result<i64, Error> {
+pub fn delete_coin(connection: &Connection, id: &i64) -> Result<usize> {
     let mut statement = connection.prepare("DELETE * FROM coins WHERE id = ?")?;
-    statement.bind((1, id))?;
-    match statement.next() {
-        Ok(State::Done) => Ok(id),
-        Ok(State::Row) => {
-            return Err(Error {
-                code: None, 
-                message: Some("SQL Statement returned unexpected result".to_string())
-            })
-        },
-        Err(e) => return Err(e),
-        
-    }
+    statement.execute([id])
 }
 
-pub fn get_all_coins(connection: &Connection) -> Result<Vec<Coin>, Error> {
+pub fn get_all_coins(connection: &Connection) -> Result<Vec<Coin>> {
     let mut statement = connection.prepare("SELECT * FROM coins")?;
+    let mut rows = statement.query([])?;
     let mut coins: Vec<Coin> = Vec::new();
-    while let Ok(State::Row) = statement.next() {
-        let coin = Coin::from_sql_row(&statement)?;
-        coins.push(coin);
+
+    while let Some(row) = rows.next()? {
+         coins.push(Coin::from_sql_row(row)?);
     }
+
     Ok(coins)
 }
 
-pub fn get_coin_by_id(connection: &Connection, id: &i64) -> Result<Coin, Error> {
+pub fn get_coin_by_id(connection: &Connection, id: &i64) -> Result<Coin> {
     let mut statement = connection.prepare("SELECT * FROM coins WHERE id = ?")?;
-    statement.bind((1, *id))?;
-    match statement.next() {
-        Ok(State::Row) => Coin::from_sql_row(&statement),
-        Ok(State::Done) => {
-            Err(Error {
-                code: None,
-                message: Some("SQL Statement returned unexpected result".to_string())
-            })
-        },
-        Err(e) => return Err(e),
-    }
+    statement.query_row([id], |row| {
+        Coin::from_sql_row(row)
+    })
 }
 
-pub fn get_coin_by_numista_id(connection: &Connection, numista_id: &i64) -> Result<Coin, Error> {
+pub fn get_coin_by_numista_id(connection: &Connection, numista_id: &i64) -> Result<Coin> {
     let mut statement = connection.prepare("SELECT * FROM coins WHERE numista_id = ?")?;
-    statement.bind((1, *numista_id))?;
-    match statement.next() {
-        Ok(State::Row) => Coin::from_sql_row(&statement),
-        Ok(State::Done) => {
-            Err(Error {
-                code: None,
-                message: Some("SQL Statement returned unexpected result".to_string())
-            })
-        },
-        Err(e) => return Err(e),
-    }
+    statement.query_row([numista_id], |row| {
+        Coin::from_sql_row(row)
+    })
 }
 
-pub fn insert_coin(connection: &Connection, coin: &Coin) -> Result<(), Error> {
+pub fn insert_coin(connection: &Connection, coin: &Coin) -> Result<i64> {
     let mut statement = connection.prepare(INSERT_SQL)?;
-    bind_coin_to_stmt(&mut statement, &coin)?;
-    match statement.next() {
-        Ok(State::Done) => Ok(()),
-        Ok(State::Row) => {
-            Err(Error {
-                code: None,
-                message: Some("SQL Statement returned unexpected result".to_string())
-            })
-        },
-        Err(e) => Err(e),
-    }
+    let c = coin;
+    statement.insert(params!(
+        c.id, 
+        c.numista_id, 
+        c.name, 
+        c.coin_type as i64, 
+        c.issuer, 
+        c.country, 
+        c.min_year, 
+        c.max_year, 
+        c.composition, 
+        c.shape as i64, 
+        c.diameter, 
+        c.thickness, 
+        c.weight,
+        c.orientation as i64,
+        c.denomination,
+        c.value,
+        c.value_numerator,
+        c.value_denominator,
+        c.currency,
+        c.grade,
+        c.obverse_image,
+        c.reverse_image,
+        c.obverse_description,
+        c.reverse_description,
+        c.is_demonitized,
+        c.comments,
+    ))
 }
 
-pub fn update_coin(connection: &Connection, id: &i64, new_coin: &Coin) -> Result<(), Error> {
+pub fn update_coin(connection: &Connection, id: &i64, new_coin: &Coin) -> Result<()> {
     let mut statement = connection.prepare(UPDATE_SQL)?;
-    bind_coin_to_stmt(&mut statement, &new_coin)?;
-    statement.bind((26, *id))?;
-    match statement.next() {
-        Ok(State::Done) => Ok(()),
-        Ok(State::Row) => {
-            Err(Error {
-                code: None,
-                message: Some("SQL Statement returned unexpected result".to_string())
-            })
-        },
+    match statement.execute(params!(
+        new_coin.id, 
+        new_coin.numista_id, 
+        new_coin.name, 
+        new_coin.coin_type as i64, 
+        new_coin.issuer, 
+        new_coin.country, 
+        new_coin.min_year, 
+        new_coin.max_year, 
+        new_coin.composition, 
+        new_coin.shape as i64, 
+        new_coin.diameter, 
+        new_coin.thickness, 
+        new_coin.weight,
+        new_coin.orientation as i64,
+        new_coin.denomination,
+        new_coin.value,
+        new_coin.value_numerator,
+        new_coin.value_denominator,
+        new_coin.currency,
+        new_coin.grade,
+        new_coin.obverse_image,
+        new_coin.reverse_image,
+        new_coin.obverse_description,
+        new_coin.reverse_description,
+        new_coin.is_demonitized,
+        new_coin.comments,
+    )) {
+        Ok(_) => Ok(()),
         Err(e) => Err(e),
     }
 }

@@ -14,10 +14,10 @@ pub struct Coin {
     pub numista_id: i64,
     pub name: String,
     pub coin_type: CoinType,
+    pub issuer: String,
+    pub country: String,
     pub min_year: i64,
     pub max_year: i64,
-    pub country: String,
-    pub issuer: String,
     pub composition: String,
     pub shape: CoinShape,
     pub diameter: f64,
@@ -50,10 +50,10 @@ impl Coin {
             numista_id: 22995,
             name: String::from("20 Kreuzers - Francis I"),
             coin_type: CoinType::StandardCirculationCoins,
+            issuer: String::from("Austrian Empire"),
+            country: String::from("Austrian Empire"),
             min_year: 1829,
             max_year: 1830,
-            country: String::from("Austrian Empire"),
-            issuer: String::from("Austrian Empire"),
             composition: String::from("Silver (.583)"),
             shape: CoinShape::Round,
             diameter: 27.6,
@@ -79,32 +79,32 @@ impl Coin {
 
     pub fn from_sql_row(row: &Row) -> Result<Coin> {
         let mut c = Coin::new();
-        c.id = row.get::<usize, i64>(1)?;
-        c.numista_id = row.get::<usize, i64>(2)?;
-        c.name = row.get::<usize, String>(3)?;
-        c.coin_type = row.get::<usize, CoinType>(4)?;
-        c.min_year = row.get::<usize, i64>(5)?;
-        c.max_year = row.get::<usize, i64>(6)?;
-        c.country = row.get::<usize, String>(7)?;
-        c.issuer = row.get::<usize, String>(8)?;
-        c.composition = row.get::<usize, String>(9)?;
-        c.shape = row.get::<usize, CoinShape>(10)?;
-        c.diameter = row.get::<usize, f64>(11)?;
-        c.thickness = row.get::<usize, f64>(12)?;
-        c.weight = row.get::<usize, f64>(13)?;
-        c.orientation = row.get::<usize, CoinOrientation>(14)?;
-        c.denomination = row.get::<usize, String>(15)?;
-        c.value = row.get::<usize, f64>(16)?;
-        c.value_numerator = row.get::<usize, i64>(17)?;
-        c.value_denominator = row.get::<usize, i64>(18)?;
-        c.currency = row.get::<usize, String>(19)?;
-        c.grade = row.get::<usize, i8>(20)?;
-        c.obverse_image = row.get::<usize, String>(21)?;
-        c.reverse_image = row.get::<usize, String>(22)?;
-        c.obverse_description = row.get::<usize, String>(23)?;
-        c.reverse_description = row.get::<usize, String>(24)?;
-        c.is_demonitized = row.get::<usize, bool>(25)?;
-        c.comments = row.get::<usize, String>(26)?;
+        c.id = row.get::<usize, i64>(0)?;
+        c.numista_id = row.get::<usize, i64>(1)?;
+        c.name = row.get::<usize, String>(2)?;
+        c.coin_type = row.get::<usize, CoinType>(3)?;
+        c.issuer = row.get::<usize, String>(4)?;
+        c.country = row.get::<usize, String>(5)?;
+        c.min_year = row.get::<usize, i64>(6)?;
+        c.max_year = row.get::<usize, i64>(7)?;
+        c.composition = row.get::<usize, String>(8)?;
+        c.shape = row.get::<usize, CoinShape>(9)?;
+        c.diameter = row.get::<usize, f64>(10)?;
+        c.thickness = row.get::<usize, f64>(11)?;
+        c.weight = row.get::<usize, f64>(12)?;
+        c.orientation = row.get::<usize, CoinOrientation>(13)?;
+        c.denomination = row.get::<usize, String>(14)?;
+        c.value = row.get::<usize, f64>(15)?;
+        c.value_numerator = row.get::<usize, i64>(16)?;
+        c.value_denominator = row.get::<usize, i64>(17)?;
+        c.currency = row.get::<usize, String>(18)?;
+        c.grade = row.get::<usize, i8>(19)?;
+        c.obverse_image = row.get::<usize, String>(20)?;
+        c.reverse_image = row.get::<usize, String>(21)?;
+        c.obverse_description = row.get::<usize, String>(22)?;
+        c.reverse_description = row.get::<usize, String>(23)?;
+        c.is_demonitized = row.get::<usize, bool>(24)?;
+        c.comments = row.get::<usize, String>(25)?;
         Ok(c)
     }
 }
@@ -117,10 +117,10 @@ impl Default for Coin {
             numista_id: 0,
             name: String::from("Default Coin"),
             coin_type: CoinType::StandardCirculationCoins,
+            issuer: String::from("Unknown"),
+            country: String::from("Unknown"),
             min_year: 0,
             max_year: 0,
-            country: String::from("Unknown"),
-            issuer: String::from("Unknown"),
             composition: String::from("Unknown"),
             shape: CoinShape::Round,
             diameter: 0.0,

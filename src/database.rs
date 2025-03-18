@@ -111,7 +111,6 @@ pub fn insert_coin(connection: &Connection, coin: &Coin) -> Result<i64> {
     let mut statement = connection.prepare(INSERT_SQL)?;
     let c = coin;
     statement.insert(params!(
-        c.id, 
         c.numista_id, 
         c.name, 
         c.coin_type as i64, 

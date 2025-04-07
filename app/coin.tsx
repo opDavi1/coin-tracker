@@ -1,3 +1,7 @@
+import React from 'react';
+import Image from 'next/image';
+import styles from './styles.module.css';
+
 export type Coin = {
     id: number,
     numistaId: number,
@@ -34,6 +38,21 @@ export enum CoinOrientation {
     Other,
 }
 
+export function coinOrientationToString(orientation: CoinOrientation): String {
+    switch (orientation) {
+        case CoinOrientation.Medal:
+            return 'Medal';
+            break;
+        case CoinOrientation.Coin:
+            return 'Coin';
+            break;
+        default:
+            return 'Other';
+            break;
+    }
+}
+
+
 export enum CoinShape {
     Round,
     Square,
@@ -42,6 +61,30 @@ export enum CoinShape {
     Triangular,
     Other,
 }
+
+export function coinShapeToString(shape: CoinShape): String {
+    switch (shape) {
+        case CoinShape.Round:
+            return 'Round';
+            break;
+        case CoinShape.Square:
+            return 'Square';
+            break;
+        case CoinShape.Polygonal:
+            return 'Polygonal';
+            break;
+        case CoinShape.Scalloped:
+            return 'Scalloped';
+            break;
+        case CoinShape.Triangular:
+            return 'Triangular';
+            break;
+        default:
+            return 'Other';
+            break;
+    }
+}
+
 
 export enum CoinType {
     StandardCirculationCoins,
@@ -97,4 +140,35 @@ export function coinTypeToString(t: CoinType): String {
             return "Other"
             break;
     }
+}
+
+export function CoinListing({coin}: {coin: Coin}) {
+  return (
+    <div className={styles.coin}>
+      <Image src={coin.obverseImage} alt="image" width={50} height={50}/>
+        <ul>
+          <li><Image src="" alt="Flag" />Test Coin</li>
+          <li>{coin.minYear} - {coin.maxYear}</li>
+          <li>{coinTypeToString(coin.coinType)}</li>
+          <li>{coin.composition} • {coin.weight}g • ⌀ {coin.diameter} mm</li>
+      </ul>
+    </div>
+  );
+}
+
+export function CoinContainer({coins}: {coins: Array<Coin>}) {
+    if(!coins?.length) {
+        return(
+            <div>
+                <h1>No Coins Found.</h1>
+            </div>
+        );
+    }
+
+    const coinListings = coins.map(coin => <CoinListing coin={coin}/>);
+    return (
+        <div>
+            {coinListings}
+        </div>
+    );
 }

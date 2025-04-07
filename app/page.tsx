@@ -1,7 +1,7 @@
-import React from 'react'
-import Image from 'next/image'
-import styles from './styles.module.css'
-import {Coin, CoinType, CoinOrientation, CoinShape, coinTypeToString} from './coin.tsx'
+import React from 'react';
+import Image from 'next/image';
+import styles from './styles.module.css';
+import {Coin, CoinType, CoinOrientation, CoinShape, coinTypeToString} from './coin.tsx';
 
 
 const testCoin: Coin = {
@@ -15,8 +15,8 @@ const testCoin: Coin = {
   obverseImage: "./tauri.svg",
   id: 0,
   numistaId: 0,
-  issuer: '',
-  country: '',
+  issuer: 'opDavi1',
+  country: 'opDavi1',
   shape: CoinShape.Round,
   thickness: 0,
   orientation: CoinOrientation.Medal,
@@ -25,13 +25,13 @@ const testCoin: Coin = {
   valueNumerator: 0,
   valueDenominator: 0,
   currency: '',
-  grade: 0,
+  grade: 70,
   reverseImage: '',
   obverseDescription: '',
   reverseDescription: '',
   isDemonitized: false,
-  comments: ''
-}
+  comments: 'This is a test coin'
+};
 
 function CoinListing({coin}: {coin: Coin}) {
   return (
@@ -44,52 +44,28 @@ function CoinListing({coin}: {coin: Coin}) {
           <li>{coin.composition} • {coin.weight}g • ⌀ {coin.diameter} mm</li>
       </ul>
     </div>
-  )
+  );
 }
 
-/* function CoinListing({coin}: {coin: Coin}) {
-  return (
-    <div className={styles.coin}>
-      <Image src="" alt="image" />
-        <ul>
-          <li><Image src="" alt="Flag" />Test Coin</li>
-          <li>2025 - 2025</li>
-          <li>Coins &gt; Standard Circulation Coins</li>
-          <li>Silver (.500) • 6.68g • ⌀ 28.8 mm</li>
-      </ul>
-    </div>
-  )
-} */
-
-/* function CoinContainer({coin}: IProps) {
-    let innerHtml = ""
-    for(coin in coins) {
-        innerHtml += `<CoinListing
-            name={coin.name}
-            yearMin={coin.yearMin}
-            yearMax={coin.yearMax}
-            type={coin.type}
-            composition={coin.composition}
-            weight={coin.weight}
-            diameter={coin.diameter}
-            flagUrl={coin.flagUrl}
-            imageUrl={coin.flagUrl}
-        \>`
+function CoinContainer({coins}: {}) {
+    if(!coins?.length) {
+        return(
+            <div>
+                <h1>No Coins Found.</h1>
+            </div>
+        );
     }
+
+    const coinListings = coins.map(coin => <CoinListing coin={coin}/>);
     return (
         <div>
-        {innerHtml}
+            {coinListings}
         </div>
-    )
-} */
+    );
+}
 
 export default function Page() {
   return (
-    <div>
-      <CoinListing coin={testCoin}/>
-      <CoinListing coin={testCoin}/>
-      <CoinListing coin={testCoin}/>
-      <CoinListing coin={testCoin}/>
-    </div>  
-  )
+    <CoinContainer coins={[testCoin, testCoin, testCoin]}/>
+  );
 }

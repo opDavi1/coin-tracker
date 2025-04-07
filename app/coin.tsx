@@ -27,7 +27,7 @@ export type Coin = {
     reverseImage: string,
     obverseDescription: string,
     reverseDescription: string,
-    isDemonitized: boolean,
+    isDemonetized: boolean,
     comments: string,
 }
 

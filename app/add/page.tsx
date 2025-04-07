@@ -86,8 +86,8 @@ export default function addCoin() {
                 <label htmlFor="grade">Grade</label>
                 <input type="number" name="grade" id="grade" min="0" max="70" step="5"/><br />
                 
-                <label htmlFor="isDemonitized">Demonetized?</label>
-                <input type="checkbox" name="isDemonitized" id="isDemonitized" /><br />
+                <label htmlFor="isDemonetized">Demonetized?</label>
+                <input type="checkbox" name="isDemonetized" id="isDemonetized" /><br />
                 
                 <label htmlFor="comments">Comments</label>
                 <textarea name="comments" id="comments"></textarea><br /><br />

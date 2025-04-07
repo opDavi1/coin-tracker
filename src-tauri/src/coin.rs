@@ -34,7 +34,7 @@ pub struct Coin {
     pub reverse_image: String,
     pub obverse_description: String,
     pub reverse_description: String,
-    pub is_demonitized: bool,
+    pub is_demonetized: bool,
     pub comments: String,
 }
 
@@ -70,7 +70,7 @@ impl Coin {
             reverse_image: String::from(""),
             obverse_description: String::from("Bust of Franz I flanked by boughs"),
             reverse_description: String::from("Double-headed eagle"),
-            is_demonitized: true,
+            is_demonetized: true,
             comments: String::from("There are slight differences between the workshops. \
                 The image below, for example, highlights the shift in the legends on the obverse left between A and B, \
                 whereas the portraits and branches are almost exactly the same. The writing on B is shifted downwards:"),
@@ -103,7 +103,7 @@ impl Coin {
         c.reverse_image = row.get::<usize, String>(21)?;
         c.obverse_description = row.get::<usize, String>(22)?;
         c.reverse_description = row.get::<usize, String>(23)?;
-        c.is_demonitized = row.get::<usize, bool>(24)?;
+        c.is_demonetized = row.get::<usize, bool>(24)?;
         c.comments = row.get::<usize, String>(25)?;
         Ok(c)
     }
@@ -137,7 +137,7 @@ impl Default for Coin {
             reverse_image: String::from(""),
             obverse_description: String::from(""),
             reverse_description: String::from(""),
-            is_demonitized: false,
+            is_demonetized: false,
             comments: String::from(""),
         }
     }

@@ -143,7 +143,7 @@ pub fn insert_coin(connection: &Connection, coin: &Coin) -> Result<i64> {
         c.reverse_image,
         c.obverse_description,
         c.reverse_description,
-        c.is_demonitized,
+        c.is_demonetized,
         c.comments,
     ))
 }
@@ -175,7 +175,7 @@ pub fn update_coin(connection: &Connection, id: &i64, new_coin: &Coin) -> Result
         new_coin.reverse_image,
         new_coin.obverse_description,
         new_coin.reverse_description,
-        new_coin.is_demonitized,
+        new_coin.is_demonetized,
         new_coin.comments,
         id, 
     )) {

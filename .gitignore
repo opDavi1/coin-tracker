@@ -29,6 +29,7 @@ node_modules/
 
 # npm, yarn and bun lock files
 package-lock.json
+pnpm-lock.yaml
 yarn.lock
 bun.lockb
 

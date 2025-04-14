@@ -4,7 +4,7 @@ export default function addCoin() {
     return (
         <div className={styles.addCoinDialogue}>
             <h1>Add a coin to the database:</h1>
-            <form name="addCoin" action="/add" method="post" autoCapitalize="none" autoComplete="off">
+            <form name="addCoin" action="/api/add" method="post" autoCapitalize="none" autoComplete="off">
                 <label htmlFor="name">Name * </label>
                 <input type="text" name="name" id="name" required /><br />
 

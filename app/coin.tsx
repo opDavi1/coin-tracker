@@ -4,31 +4,31 @@ import styles from './styles.module.css';
 
 export type Coin = {
     id: number,
-    numistaId: number,
+    numistaId?: number,
     name: string,
     coinType: CoinType,
-    issuer: string,
-    country: string,
-    minYear: number,
-    maxYear: number,
-    composition: string,
+    issuer?: string,
+    country?: string,
+    minYear?: number,
+    maxYear?: number,
+    composition?: string,
     shape: CoinShape,
-    diameter: number,
-    thickness: number,
-    weight: number,
+    diameter?: number,
+    thickness?: number,
+    weight?: number,
     orientation: CoinOrientation,
-    denomination: string,
-    value: number,
-    valueNumerator: number,
-    valueDenominator: number,
-    currency: string,
-    grade: number,
-    obverseImage: string,
-    reverseImage: string,
-    obverseDescription: string,
-    reverseDescription: string,
-    isDemonetized: boolean,
-    comments: string,
+    denomination?: string,
+    value?: number,
+    valueNumerator?: number,
+    valueDenominator?: number,
+    currency?: string,
+    grade?: number,
+    obverseImage?: string,
+    reverseImage?: string,
+    obverseDescription?: string,
+    reverseDescription?: string,
+    isDemonetized?: boolean,
+    comments?: string,
 }
 
 
@@ -145,9 +145,9 @@ export function coinTypeToString(t: CoinType): String {
 export function CoinListing({coin}: {coin: Coin}) {
   return (
     <div className={styles.coin}>
-      <Image src={coin.obverseImage} alt="image" width={50} height={50}/>
+      <Image src={coin.obverseImage} alt="Obverse of coin" width={50} height={50}/>
         <ul>
-          <li><Image src="" alt="Flag" />Test Coin</li>
+          <li><Image src="" alt="Flag" className={styles.flagImg} width={30} height={20}/>Test Coin</li>
           <li>{coin.minYear} - {coin.maxYear}</li>
           <li>{coinTypeToString(coin.coinType)}</li>
           <li>{coin.composition} • {coin.weight}g • ⌀ {coin.diameter} mm</li>

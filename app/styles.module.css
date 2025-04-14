@@ -3,8 +3,14 @@
 }
 
 .coin {
-    border: 2px solid black;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
     margin-bottom: 1vh;
+}
+
+.flagImg {
+  border: 1px solid var(--primary-color);
+  margin-right: 1em;
 }
 
 .coin li{

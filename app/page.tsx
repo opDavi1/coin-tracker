@@ -12,28 +12,21 @@ const testCoin: Coin = {
   diameter: 28.8,
   obverseImage: "./tauri.svg",
   id: 0,
-  numistaId: 0,
   issuer: 'opDavi1',
   country: 'opDavi1',
   shape: CoinShape.Round,
   thickness: 0,
   orientation: CoinOrientation.Medal,
-  denomination: '',
   value: 0,
   valueNumerator: 0,
   valueDenominator: 0,
-  currency: '',
   grade: 70,
-  reverseImage: '',
-  obverseDescription: '',
-  reverseDescription: '',
-  isDemonitized: false,
+  isDemonitized: true,
   comments: 'This is a test coin'
 };
 
 
 export default function Page() {
-  
   return (
     <CoinContainer coins={[testCoin, testCoin, testCoin]}/>
   );

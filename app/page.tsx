@@ -1,5 +1,5 @@
 import React from 'react';
-import {Coin, CoinContainer, CoinType, CoinOrientation, CoinShape} from './coin.tsx';
+import {Coin, CoinContainer, CoinType, CoinOrientation, CoinShape} from './_components/coin/coin.tsx';
 
 
 const testCoin: Coin = {

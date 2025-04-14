@@ -167,7 +167,7 @@ export function CoinContainer({coins}: {coins: Array<Coin>}) {
 
     const coinListings = coins.map(coin => <CoinListing coin={coin}/>);
     return (
-        <div>
+        <div className={styles.coinContainer}>
             {coinListings}
         </div>
     );

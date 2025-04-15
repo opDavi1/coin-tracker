@@ -1,5 +1,8 @@
 // This file is a part of coin-tracker by opDavi1 licensed under the GPL-3.0-or-later license.
 // See the included LICENSE.md file for more details or go to <https://www.gnu.org/licenses/>
+// 
+// Part of this code is taken from RandomEngy/tauri-sqlite on github, which has no license.
+// If anybody has an issue with this, please contact me.
 
 use std::{fs, path::Path};
 
@@ -74,7 +77,7 @@ pub fn init(app_handle: &AppHandle, file: Option<&Path>) -> Result<Connection, r
         Some(f) => app_dir.join(f),
         None => app_dir.join("coin-tracker.sqlite"),
     };
-    let db: Connection= Connection::open(sqlite_path)?;
+    let db = Connection::open(sqlite_path)?;
     db.execute(DATABASE_SQL, ())?;
     println!("Initialized the database");
     Ok(db)
@@ -108,14 +111,20 @@ pub fn get_coin_by_id(connection: &Connection, id: &i64) -> Result<Coin, rusqlit
 }
 
 
-pub fn get_coins_by_numista_id(connection: &Connection, numista_id: &i64) -> Result<Vec<Coin>, rusqlite::Error> {
+// A count less than 1 will return all matches
+pub fn get_coins_by_numista_id(connection: &Connection, numista_id: &i64, count: &i64) -> Result<Vec<Coin>, rusqlite::Error> {
     let mut statement = connection.prepare("SELECT * FROM coins WHERE numista_id = ?")?;
     let mut rows = statement.query([numista_id])?;
     let mut coins = Vec::new();
     while let Some(row) = rows.next()? {
         coins.push(Coin::from_sql_row(row)?);
     }
-    Ok(coins)
+
+    if *count <  1 {
+        Ok(coins)
+    } else {
+        Ok(coins.into_iter().take(*count as usize).collect())
+    }
 }
 
 

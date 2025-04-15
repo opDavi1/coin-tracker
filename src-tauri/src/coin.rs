@@ -1,14 +1,13 @@
 // This file is a part of coin-tracker by opDavi1 licensed under the GPL-3.0-or-later license.
 // See the included LICENSE.md file for more details or go to <https://www.gnu.org/licenses/>
 
+use rusqlite::{Result, Row};
+use rusqlite::types::{FromSql, FromSqlError, FromSqlResult, ValueRef};
+use serde::{Deserialize, Serialize};
 use std::convert::From;
 use std::fmt::Debug;
 
-use rusqlite::{Result, Row};
-use rusqlite::types::{FromSql, FromSqlError, FromSqlResult, ValueRef};
-
-#[allow(dead_code)]
-#[derive(Debug)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct Coin {
     pub id: i64,
     pub numista_id: i64,
@@ -144,7 +143,7 @@ impl Default for Coin {
 }
 
 
-#[derive(Copy, Clone, Debug, Default)]
+#[derive(Copy, Clone, Debug, Default, Deserialize, Serialize)]
 pub enum CoinOrientation {
     Medal,
     #[default]
@@ -174,7 +173,7 @@ impl FromSql for CoinOrientation {
 }
 
 
-#[derive(Copy, Clone, Debug, Default)]
+#[derive(Copy, Clone, Debug, Default, Deserialize, Serialize)]
 pub enum CoinShape {
     #[default]
     Round,
@@ -210,7 +209,7 @@ impl FromSql for CoinShape {
 }
 
 
-#[derive(Copy, Clone, Debug, Default)]
+#[derive(Copy, Clone, Debug, Default, Deserialize, Serialize)]
 pub enum CoinType {
     #[default]
     StandardCirculationCoins,

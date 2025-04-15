@@ -1,9 +1,10 @@
 // This file is a part of coin-tracker by opDavi1 licensed under the GPL-3.0-or-later license.
 // See the included LICENSE.md file for more details or go to <https://www.gnu.org/licenses/>
 
-use std::path::Path;
+use std::{fs, path::Path};
 
-use rusqlite::{params, Connection, Result};
+use rusqlite::{params, Connection};
+use tauri::{AppHandle, Manager};
 use crate::coin::Coin;
 
 const DATABASE_SQL: &str = "CREATE TABLE IF NOT EXISTS coins (
@@ -66,25 +67,27 @@ const UPDATE_SQL: &str = "UPDATE coins SET \
         WHERE id = ?";
 
 
-pub fn init(file: Option<&Path>) -> Result<Connection> {
-    let connection: Connection;
-    match file {
-        Some(f) => connection = Connection::open(f)?,
-        None => connection = Connection::open("database.db")?,
-    }
-    connection.execute(DATABASE_SQL, ())?;
+pub fn init(app_handle: &AppHandle, file: Option<&Path>) -> Result<Connection, rusqlite::Error> {
+    let app_dir = app_handle.path().app_data_dir().expect("The app data dir should exist");
+    fs::create_dir_all(&app_dir).expect("The app data dir should be created");
+    let sqlite_path = match file {
+        Some(f) => app_dir.join(f),
+        None => app_dir.join("coin-tracker.sqlite"),
+    };
+    let db: Connection= Connection::open(sqlite_path)?;
+    db.execute(DATABASE_SQL, ())?;
     println!("Initialized the database");
-    Ok(connection)
+    Ok(db)
 }
 
 
-pub fn delete_coin(connection: &Connection, id: &i64) -> Result<usize> {
+pub fn delete_coin(connection: &Connection, id: &i64) -> Result<usize, rusqlite::Error> {
     let mut statement = connection.prepare("DELETE * FROM coins WHERE id = ?")?;
     statement.execute([id])
 }
 
 
-pub fn get_all_coins(connection: &Connection) -> Result<Vec<Coin>> {
+pub fn get_all_coins(connection: &Connection) -> Result<Vec<Coin>, rusqlite::Error> {
     let mut statement = connection.prepare("SELECT * FROM coins")?;
     let mut rows = statement.query([])?;
     let mut coins: Vec<Coin> = Vec::new();
@@ -97,7 +100,7 @@ pub fn get_all_coins(connection: &Connection) -> Result<Vec<Coin>> {
 }
 
 
-pub fn get_coin_by_id(connection: &Connection, id: &i64) -> Result<Coin> {
+pub fn get_coin_by_id(connection: &Connection, id: &i64) -> Result<Coin, rusqlite::Error> {
     let mut statement = connection.prepare("SELECT * FROM coins WHERE id = ?")?;
     statement.query_row([id], |row| {
         Coin::from_sql_row(row)
@@ -105,7 +108,7 @@ pub fn get_coin_by_id(connection: &Connection, id: &i64) -> Result<Coin> {
 }
 
 
-pub fn get_coins_by_numista_id(connection: &Connection, numista_id: &i64) -> Result<Vec<Coin>> {
+pub fn get_coins_by_numista_id(connection: &Connection, numista_id: &i64) -> Result<Vec<Coin>, rusqlite::Error> {
     let mut statement = connection.prepare("SELECT * FROM coins WHERE numista_id = ?")?;
     let mut rows = statement.query([numista_id])?;
     let mut coins = Vec::new();
@@ -116,7 +119,7 @@ pub fn get_coins_by_numista_id(connection: &Connection, numista_id: &i64) -> Res
 }
 
 
-pub fn insert_coin(connection: &Connection, coin: &Coin) -> Result<i64> {
+pub fn insert_coin(connection: &Connection, coin: &Coin) -> Result<i64, rusqlite::Error> {
     let mut statement = connection.prepare(INSERT_SQL)?;
     let c = coin;
     statement.insert(params!(
@@ -149,7 +152,7 @@ pub fn insert_coin(connection: &Connection, coin: &Coin) -> Result<i64> {
 }
 
 
-pub fn update_coin(connection: &Connection, id: &i64, new_coin: &Coin) -> Result<()> {
+pub fn update_coin(connection: &Connection, id: &i64, new_coin: &Coin) -> Result<(), rusqlite::Error> {
     let mut statement = connection.prepare(UPDATE_SQL)?;
     match statement.execute(params!(
         new_coin.numista_id, 

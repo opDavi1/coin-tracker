@@ -145,7 +145,7 @@ export function coinTypeToString(t: CoinType): String {
 export function CoinListing({coin}: {coin: Coin}) {
   return (
     <div className={styles.coin}>
-      <Image src={coin.obverseImage} alt="Obverse of coin" width={50} height={50}/>
+      <Image src={coin.obverseImage || ''} alt="Obverse of coin" width={50} height={50}/>
         <ul>
           <li><Image src="" alt="Flag" className={styles.flagImg} width={30} height={20}/>Test Coin</li>
           <li>{coin.minYear} - {coin.maxYear}</li>

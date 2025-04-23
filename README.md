@@ -25,5 +25,7 @@ To compile and run the dev build, run the following command.
 npm tauri run dev
 ```
 
+To submit changes, just make a pull request on this repository.
+
 ## Contact
 For any questions, comments, concerns, and scathing criticisms, please make an issue on github or contact me directly on discord (@opdavi1)

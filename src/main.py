@@ -3,6 +3,7 @@
 
 from database import Database
 from gui import Gui
+from settings import settings
 
 # from coin import Coin
 

@@ -2,13 +2,14 @@
 # See LICENSE for details or go to <https://www.gnu.org/licenses/>
 
 from database import Database
-from app import CoinTracker
+from gui import Gui
+
 # from coin import Coin
 
 
 def main():
     db = Database()
-    CoinTracker()
+    Gui()
     db.close()
 
 

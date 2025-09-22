@@ -63,8 +63,16 @@ def get_coin_by_numista_id(numista_id: int) -> coin.Coin:
     c.is_demonitized = is_demonitized if is_demonitized else False
     c.comments = comments if comments else ""
     c.shape = coin.CoinShape[shape.upper()] if shape else coin.CoinShape.ROUND
-    c.orientation = coin.CoinOrientation[orientation.upper()] if orientation else coin.CoinOrientation.COIN
-    c.coin_type = coin.coin_type_from_str(coin_type) if coin_type else coin.CoinType.STANDARD_CIRCULATION_COINS
+    c.orientation = (
+        coin.CoinOrientation[orientation.upper()]
+        if orientation
+        else coin.CoinOrientation.COIN
+    )
+    c.coin_type = (
+        coin.coin_type_from_str(coin_type)
+        if coin_type
+        else coin.CoinType.STANDARD_CIRCULATION_COINS
+    )
 
     # TODO download image from link provided in response and put the path in
     # these vars:

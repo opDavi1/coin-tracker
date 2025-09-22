@@ -68,8 +68,7 @@ class Database:
 
     def get_coin_by_numista_id(self, numista_id: int):
         res = self.cursor.execute(
-            "SELECT * FROM coins WHERE numista_id = ?",
-            numista_id
+            "SELECT * FROM coins WHERE numista_id = ?", numista_id
         )
         return Coin().from_sql_row(res.fetchone())
 

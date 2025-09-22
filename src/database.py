@@ -42,7 +42,7 @@ class Database:
         sqlite_connection = sqlite3.connect(DATABASE_NAME + ".db")
         cursor = sqlite_connection.cursor()
         cursor.execute(DATABASE_SQL)
-        print("init db")
+        print(f"initialized database {DATABASE_NAME}.db")
 
         self.connection = sqlite_connection
         self.cursor = cursor

@@ -9,23 +9,28 @@ Coin Tracker is distributed under the GPL-3.0-or-later license. See the included
 
 ## Installation
 
-This project is still very early in development. So the best way to "install" Coin Tracker is to just clone this repo, and install the requirements in `requirements.txt`. Once the requirements are installed run the program by running 
+This project is still very early in development. So the best way to "install" Coin Tracker is to just clone this repo, and install the requirements in `requirements.txt`. Once the requirements are installed run the program by navigating to the src directory and running 
 ```console
-$ python CoinTracker.py
+$ python main.py
 ```
 Eventually there will probably be an install script of some sort, but that's a long way down the road from now
 
 
 ## Contributing
 
+Thanks for taking the time to contribute!
+
+> ### Legal Notice
+> When contributing to this project, you must agree that you have authored 100% of the content, that you have the necessary rights to the content and that the content you contribute may be provided under the project licence.
+
 ### Bug Reports
 - Make sure that a similar issue isn't already open
-- [Create an issue](https://github.com/opDavi1/coin-tracker/issues) for your bug
+- [Open an issue](https://github.com/opDavi1/coin-tracker/issues/new) for your bug
     - Include as many relevant details as possible in your issue to avoid confusion and help us determine how to fix the bug
 
 ### Feature Suggestions
 - Make sure that a similar feature isn't already suggested
-- [Create an issue](https://github.com/opDavi1/coin-tracker/issues) for your feature request
+- [Open an issue](https://github.com/opDavi1/coin-tracker/issues/new) for your feature request
 
 ### Your First Code Contribution
 To contribute actual sections of code, setup your environment as follows:
@@ -55,3 +60,6 @@ To deactivate the virtual environment, simply run
 ```console
 $ deactivate
 ```
+
+### Attribution
+Parts of this [Contributing](#contributing) section were based on this [contributing.md guide](https://contributing.md/)

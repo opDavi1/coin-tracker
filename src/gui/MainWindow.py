@@ -1,12 +1,7 @@
 # this file is part of coin-tracker by opdavi1 and subject to the GNU GPL-3.0-or-later license.
 # See LICENSE for details or go to <https://www.gnu.org/licenses/>
 
-from PyQt6.QtWidgets import (
-    QApplication,
-    QMainWindow,
-    QPushButton
-)
-import sys
+from PyQt6.QtWidgets import QLabel, QMainWindow, QPushButton
 
 
 class MainWindow(QMainWindow):
@@ -15,18 +10,7 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("Coin Tracker")
 
-        button = QPushButton("Show database")
-        button.pressed.connect(lambda: print("Showing database"))
+        coin_list = QLabel("Coins will eventually be displayed here")
 
-        exit_button = QPushButton("Exit app")
-        exit_button.pressed.connect(self.close)
-
-        self.setCentralWidget(exit_button)
+        self.setCentralWidget(coin_list)
         self.show()
-
-
-app = QApplication(sys.argv)
-app.setApplicationName("Coin Tracker")
-app.setApplicationVersion("0.0.1")
-w = MainWindow()
-app.exec()

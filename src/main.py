@@ -7,18 +7,14 @@ import sys
 
 
 EXECUTABLE_NAME = "coin-tracker"
-VERSION = "0.0.1"
+VERSION = "0.0.0"
 
 
 def main():
-
-    print("start of if")
-
     if len(sys.argv) >= 2 and sys.argv[1] in ("--version", "-v"):
         print(EXECUTABLE_NAME + " " + VERSION)
         quit()
 
-    print("after if")
     app = QApplication(sys.argv)
     app.setApplicationVersion(VERSION)
 

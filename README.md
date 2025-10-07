@@ -2,6 +2,11 @@
 
 A desktop app made to locally host your coin collection in a sqlite database. Add, remove, update, and even import coins straight from numista using the numista api.
 
+As of right now, there is no way to manually add coins to the database. This is coming very soon. If you want to add coins to the database, run test.py to add an example coin to the database, or use it as a reference to add your coins to the collection, although i don't know why you'd do that with the current state of the program. 
+
+## Database Notice
+This is a VERY VERY VERY early version of this project. The database file, format, schema, etc. are very volatile and are subject to breaking changes at any point. This will continue until v1.0.0 releases, at which point the database should not recieve breaking changes. I will try not to break the database in these early versions, but be careful of changes that may affect the database if you're using it (again, i dont know why you would be right now)
+
 
 ## License
 

@@ -49,6 +49,7 @@ class Database:
 
     def close(self):
         self.cursor.close()
+        print(f"Closed database connection to {DATABASE_NAME}.db")
 
     def delete_coin(self, coin: Coin):
         self.cursor.execute("DELETE FROM coins WHERE id = ?", coin.id)

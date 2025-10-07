@@ -34,6 +34,8 @@ def main():
     mainWindow.show()
 
     app.exec()
+    db.close()
+    quit(0)
 
 
 if __name__ == "__main__":

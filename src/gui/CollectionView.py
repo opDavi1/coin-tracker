@@ -24,7 +24,7 @@ class CollectionEntry(QLabel):
 
 
 class CollectionView(QWidget):
-    def __init__(self, collection: List[Coin] = [], entriesPerPage: int = 10):
+    def __init__(self, collection: List[Coin] = None, entriesPerPage: int = 10):
         super().__init__()
 
         self.entriesPerPage = entriesPerPage
@@ -32,7 +32,16 @@ class CollectionView(QWidget):
         layout = QVBoxLayout()
         self.setLayout(layout)
 
-        # TODO: get coins from database
+        # TODO: doesn't work, database func not returning None for empty list
+        if collection is None:
+            label = QLabel((
+                "There are no coins to display.\n"
+                "Try adding some to get started!"
+            ))
+            layout.addWidget(label)
+            label.show()
+            return
+
         self.entries = []
         for e in collection:
             entry = CollectionEntry(e)

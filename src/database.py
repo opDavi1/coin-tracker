@@ -61,6 +61,9 @@ class Database:
         for row in coin_rows:
             coins.append(Coin().from_sql_row(row))
 
+        if len(coins) == 0:
+            return None
+
         return coins
 
     def get_coin_by_id(self, id: int):

@@ -32,7 +32,6 @@ class CollectionView(QWidget):
         layout = QVBoxLayout()
         self.setLayout(layout)
 
-        # TODO: doesn't work, database func not returning None for empty list
         if collection is None:
             label = QLabel((
                 "There are no coins to display.\n"
